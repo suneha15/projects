@@ -1,6 +1,9 @@
-import React from 'react'
+import React,{useState} from 'react'
 
 export const AddTransaction = () => {
+    const [text, setText] = useState('');
+    const [amount, setAmount] = useState(0)
+
   return (
     <div>
         <h3>Add new transaction</h3>
@@ -10,17 +13,27 @@ export const AddTransaction = () => {
                 <input 
                     type="text" 
                     id="text"
+                    name='text'
+                    value={text}
+                    onChange={(e)=>{
+                        setText(e.target.value)
+                    }}
                     placeholder='Enter text...' 
                     />
             </div>
             <div>
                 <label htmlFor="amount">
                     Amount <br/>
-                    (negative-expense, positive-income)
+                    (negative - expense, positive - income)
                 </label>
                 <input 
                     type="number" 
                     id='amount' 
+                    name='amount'
+                    value={amount}
+                    onChange={(e)=>{
+                        setAmount(e.target.value)
+                    }}
                     placeholder='Enter amount...' 
                 />
             </div>
