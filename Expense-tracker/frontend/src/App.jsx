@@ -1,34 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState,useReducer } from 'react'
 import './App.css'
+import { Header } from './components/Header'
+import { Balance } from './components/Balance'
+import { IncomeExpenses } from './components/IncomeExpenses'
+import { TransactionList } from './components/TransactionList'
+import { AddTransaction } from './components/AddTransaction'
+
+import { GlobalProvider } from './context/GlobalState'
+
+function reducer(state,action){
+  console.log(state,action);
+  
+  switch(action.type){
+    case "increment":
+      return ({ ...state, count : state.count + 1});
+
+    case "decrement":
+      return ({ ...state, count : state.count - 1});
+  }
+}
+
+const initialState = {count : 0}
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [state,dispatch] = useReducer(reducer,initialState)
+
+  function handleIncrement(){
+    dispatch({type : "increment"});
+  }
+
+  function handleDecrement(){
+    dispatch({type : "decrement"})
+  }
 
   return (
-    <>
+    <GlobalProvider>
+      <Header/>
+      <div className="container">
+        <Balance/>
+        <IncomeExpenses/>
+        <TransactionList/>
+        <AddTransaction/>
+      </div>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <h1>Count : {state.count}</h1>
+        <button onClick={handleIncrement}>Incrememt</button>
+        <button onClick={handleDecrement}>Decrement</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </GlobalProvider>
   )
 }
 
